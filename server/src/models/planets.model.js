@@ -1,5 +1,6 @@
-const { parse } = require('csv-parse');
 const fs = require('fs');
+const path = require('path');
+const { parse } = require('csv-parse');
 
 const habitablePlanets = [];
 
@@ -12,26 +13,35 @@ function isHabitablePlanet(planet) {
   ); // for a planet to be habitable, the koi_insol shold be between 0.36 & 1.11 & radius ratio shold be less than 1.6
 }
 
-fs.createReadStream('kepler-data.csv')
-  .pipe(
-    parse({
-      comment: '#',
-      columns: true,
-    })
-  )
-  .on('data', (data) => {
-    if (isHabitablePlanet(data)) {
-      habitablePlanets.push(data);
-    }
-  })
-  .on('error', (err) => {
-    console.log('There has been an error: ', err);
-  })
-  .on('end', () => {
-    console.log(`${habitablePlanets.length} habitable planets found!`);
-    console.log('done.');
+function loadPlanetsData() {
+  return new Promise((resolve, reject) => {
+    fs.createReadStream(
+      path.join(__dirname, '..', '..', 'data', 'kepler-data.csv')
+    )
+      .pipe(
+        parse({
+          comment: '#',
+          columns: true,
+        })
+      )
+      .on('data', (data) => {
+        if (isHabitablePlanet(data)) {
+          habitablePlanets.push(data);
+        }
+      })
+      .on('error', (err) => {
+        console.log('There has been an error: ', err);
+        reject(err);
+      })
+      .on('end', () => {
+        console.log(`${habitablePlanets.length} habitable planets found!`);
+        console.log('done.');
+        resolve();
+      });
   });
+}
 
 module.exports = {
+  loadPlanetsData,
   planets: habitablePlanets,
 };

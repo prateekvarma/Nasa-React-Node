@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/prateekvarma/Nasa-React-Node/issues"
   },
-  "homepage": "https://github.com/prateekvarma/Nasa-React-Node#readme"
+  "homepage": "https://github.com/prateekvarma/Nasa-React-Node#readme",
+  "dependencies": {
+    "morgan": "^1.10.0"
+  }
 }

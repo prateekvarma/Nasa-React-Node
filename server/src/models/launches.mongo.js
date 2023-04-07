@@ -32,3 +32,7 @@ const launchesSchema = new mongoose.Schema({
     default: true,
   },
 });
+
+//Connects launchesSchema to the launches collection
+//mongoose will auto de-capitalize Launch and pluralize it
+module.exports = mongoose.model('Launch', launchesSchema);

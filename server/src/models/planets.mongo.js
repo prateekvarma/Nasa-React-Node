@@ -6,3 +6,7 @@ const planetSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+//Connects planetSchema to the planets collection
+//mongoose will auto de-capitalize Planet and pluralize it
+module.exports = mongoose.model('Planet', planetSchema)

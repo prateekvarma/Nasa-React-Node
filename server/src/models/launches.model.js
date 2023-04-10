@@ -10,7 +10,7 @@ const launch = {
   mission: 'Kepler Exploration X',
   rocket: 'Explorer IS1',
   launchDate: new Date('December 27, 2030'),
-  target: 'Kepler-442 b',
+  target: 'Kepler-226 d',
   customers: ['ZTM', 'NASA'],
   upcoming: true,
   success: true,
@@ -62,17 +62,18 @@ async function saveLaunch(launch) {
   );
 }
 
-function addNewLaunch(launch) {
-  latestFlightNumber++;
-  launches.set(
-    latestFlightNumber,
-    Object.assign(launch, {
-      success: true,
-      upcoming: true,
-      customers: ['Zero to Master', 'NASA'],
-      flightNumber: latestFlightNumber,
-    })
-  );
+//below function is a mongoDB compatible version of 'addNewLaunch'
+async function scheduleNewLaunch(launch) {
+  const newFlightNumber = (await getLatestFlightNumber()) + 1;
+
+  const newLaunch = Object.assign(launch, {
+    success: true,
+    upcoming: true,
+    customers: ['Zero to Mastery', 'NASA'],
+    flightNumber: newFlightNumber,
+  });
+
+  await saveLaunch(newLaunch);
 }
 
 function abortLaunchById(launchId) {
@@ -84,7 +85,7 @@ function abortLaunchById(launchId) {
 
 module.exports = {
   getAllLaunches,
-  addNewLaunch,
-  existsLaunchWithId,
+  getAllLaunches,
+  scheduleNewLaunch,
   abortLaunchById,
 };

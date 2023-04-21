@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 const launchesDB = require('./launches.mongo');
 const planets = require('./planets.mongo');
 
@@ -17,6 +19,11 @@ const launch = {
 };
 
 saveLaunch(launch);
+
+async function loadLaunchesData() {
+  console.log('Downloading launch data...');
+  // tbd: await axios.post();
+}
 
 async function existsLaunchWithId(launchId) {
   return await launchesDB.findOne({
@@ -88,10 +95,11 @@ async function abortLaunchById(launchId) {
       success: false,
     }
   );
-  return aborted.ok === 1 && aborted.nModified === 1;
+  return aborted.modifiedCount === 1;
 }
 
 module.exports = {
+  loadLaunchesData,
   getAllLaunches,
   getAllLaunches,
   scheduleNewLaunch,

@@ -20,9 +20,29 @@ const launch = {
 
 saveLaunch(launch);
 
+const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
+
 async function loadLaunchesData() {
   console.log('Downloading launch data...');
-  // tbd: await axios.post();
+  const response = await axios.post(SPACEX_API_URL, {
+    query: {},
+    options: {
+      populate: [
+        {
+          path: 'rocket',
+          select: {
+            name: 1,
+          },
+        },
+        {
+          path: 'payloads',
+          select: {
+            customers: 1,
+          },
+        },
+      ],
+    },
+  });
 }
 
 async function existsLaunchWithId(launchId) {

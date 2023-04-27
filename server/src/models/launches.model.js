@@ -78,7 +78,7 @@ async function loadLaunchData() {
 }
 
 async function findLaunch(filter) {
-  return await launchesDD.findOne(filter);
+  return await launchesDB.findOne(filter);
 }
 
 async function existsLaunchWithId(launchId) {
